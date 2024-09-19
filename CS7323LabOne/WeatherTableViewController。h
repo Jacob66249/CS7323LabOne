@@ -1,0 +1,19 @@
+//
+//  WatherData.h
+//  CS7323LabOne
+//
+//  Created by mingyun zhang on 9/18/24.
+//
+
+#import <UIKit/UIKit.h>
+
+
+
+@interface WeatherTableViewController : UITableViewController
+
+
+@property  NSArray *weatherData;
+@end
+
+
+
