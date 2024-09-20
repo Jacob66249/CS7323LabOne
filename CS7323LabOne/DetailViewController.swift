@@ -6,19 +6,21 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityImageView: UIImageView!
     @IBOutlet weak var conditionLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView! // Connected in storyboard
-    @IBOutlet weak var humidityLabel: UILabel! // Connected in storyboard
-    @IBOutlet weak var descriptionLabel: UILabel! // Connected in storyboard
-    @IBOutlet weak var stepper: UIStepper! // Connect this to the stepper in storyboard
-    @IBOutlet weak var toggleSwitch: UISwitch! // Connect this to the switch in storyboard
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var stepper: UIStepper!
+    @IBOutlet weak var toggleSwitch: UISwitch!
     @IBOutlet weak var stepperLabel: UILabel!
-    
+    @IBOutlet weak var segmentedControl: UISegmentedControl! // Connect to the segmented control in storyboard
+
     var cityName: String?
     var temperature: String?
     var cityImage: UIImage?
     var weatherCondition: String?
     var humidity: String?
-    var weatherDescription: String? // Ensure this is not nil or empty
+    var weatherDescription: String?
+    var weatherDate: String? = "Date: September 19, 2024" // Example date data
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,56 +32,69 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         cityImageView.image = cityImage
         humidityLabel.text = "Humidity: \(humidity ?? "N/A")"
         
-        // Debug: Check what text is being assigned
         let fullDescription = "Description: \(weatherDescription ?? "No description available")"
-        print("Full Description: \(fullDescription)") // Check console output
-        
-        // Set up the descriptionLabel with multiple lines and wrapping
         descriptionLabel.text = fullDescription
-        descriptionLabel.numberOfLines = 0 // Allows unlimited lines
-        descriptionLabel.lineBreakMode = .byWordWrapping // Wraps text to the next line
-        
-        // Force the label to adjust size to fit content
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.lineBreakMode = .byWordWrapping
         descriptionLabel.sizeToFit()
         
-        // Set up the scroll view for zooming (if used for zoom purposes)
         scrollView.delegate = self
         scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 3.0
         scrollView.contentSize = cityImageView.bounds.size
         
-        // Add gesture recognizer for double-tap zooming
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(recognizer:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         
-        // Setting up stepper
         stepper.minimumValue = 5
         stepper.maximumValue = 15
         stepper.value = 10
         stepper.stepValue = 1
         stepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
         
-        // Setting up switch
         toggleSwitch.isOn = false
         toggleSwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         
-        // Optional: Label for stepper value
         stepperLabel.text = "Font Size: \(Int(stepper.value))"
-        
-        // Initialize font size
         updateFontSize(size: CGFloat(stepper.value))
+        
+        // Setup for segmented control
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0: // Show weather data
+            cityLabel.isHidden = false
+            temperatureLabel.isHidden = false
+            conditionLabel.isHidden = false
+            humidityLabel.isHidden = false
+            descriptionLabel.isHidden = false
+            cityImageView.isHidden = false
+            stepper.isHidden = false
+            stepperLabel.isHidden = false
+        case 1: // Show date information
+            cityLabel.text = weatherDate // Show date information in the city label as an example
+            temperatureLabel.isHidden = true
+            conditionLabel.isHidden = true
+            humidityLabel.isHidden = true
+            descriptionLabel.isHidden = true
+            cityImageView.isHidden = true
+            stepper.isHidden = true
+            stepperLabel.isHidden = true
+        default:
+            break
+        }
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {
-        // Adjust the font size of the labels based on the stepper value
         let fontSize = CGFloat(sender.value)
         updateFontSize(size: fontSize)
         stepperLabel.text = "Font Size: \(Int(fontSize))"
-        print("Stepper value changed to: \(sender.value)")
     }
     
-    // Helper method to update font size of all relevant labels
     private func updateFontSize(size: CGFloat) {
         cityLabel.font = UIFont.systemFont(ofSize: size)
         temperatureLabel.font = UIFont.systemFont(ofSize: size)
@@ -89,9 +104,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         stepperLabel.font = UIFont.systemFont(ofSize: size)
     }
     
-    // Action for Switch
     @objc func switchValueChanged(_ sender: UISwitch) {
-        // Control whether to display all data
         let isHidden = !sender.isOn
         cityLabel.isHidden = isHidden
         temperatureLabel.isHidden = isHidden
@@ -101,15 +114,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         cityImageView.isHidden = isHidden
         stepper.isHidden = isHidden
         stepperLabel.isHidden = isHidden
-        
-        if sender.isOn {
-            print("All data display turned ON")
-        } else {
-            print("All data display turned OFF")
-        }
     }
     
-    // Method to handle the double-tap gesture
     @objc func handleDoubleTap(recognizer: UITapGestureRecognizer) {
         if scrollView.zoomScale == scrollView.minimumZoomScale {
             scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
@@ -118,7 +124,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    // Delegate method to specify the view for zooming
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return cityImageView
     }

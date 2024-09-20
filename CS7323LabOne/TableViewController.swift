@@ -1,5 +1,3 @@
-
-
 //
 //  WeatherViewController.swift
 //  CS7323LabOne
@@ -12,16 +10,56 @@ import UIKit
 class WeatherTableViewController: UITableViewController {
 
     var weatherData: [[String: String]] = []
+    var isCelsius = true // Track whether temperature is in Celsius
+    var selectedDate: String? // Add this property to receive the selected date from ViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 120 // Set estimated height based on the larger image size
-        // 从 Objective-C 文件获取天气数据
-        if let data = WeatherData().getWeatherData() as? [[String: String]] {
-            weatherData = data
+        tableView.estimatedRowHeight = 120
+        
+        // Print the selected date to verify it's passed correctly
+        if let date = selectedDate {
+            print("Selected date: \(date)")
         }
         
+        // Load weather data from the Objective-C file
+        loadWeatherData()
+        
+        // Add Refresh Button
+        let refreshButton = UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(refreshData))
+        navigationItem.rightBarButtonItem = refreshButton
+        
+        // Add Slider
+        let slider = UISlider(frame: CGRect(x: 20, y: 80, width: 300, height: 40))
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.value = 0 // Start with Celsius
+        slider.addTarget(self, action: #selector(temperatureScaleChanged(_:)), for: .valueChanged)
+        tableView.tableHeaderView = slider
+    }
+
+    // MARK: - Data Loading
+    
+    func loadWeatherData() {
+        if let data = WeatherData().getWeatherData() as? [[String: String]] {
+            weatherData = data
+            tableView.reloadData()
+        }
+    }
+    
+    // MARK: - Button Action
+    
+    @objc func refreshData() {
+        loadWeatherData()
+        print("Weather data refreshed")
+    }
+    
+    // MARK: - Slider Action
+    
+    @objc func temperatureScaleChanged(_ sender: UISlider) {
+        isCelsius = sender.value < 0.5
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -31,89 +69,68 @@ class WeatherTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Each section contains only one row showing city name and image
         return 3
     }
 
-    // Configure each cell based on its type
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let weather = weatherData[indexPath.section] // Get weather data for the current section
+        let weather = weatherData[indexPath.section]
 
         if indexPath.row == 0 {
-            // City cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath)
-            cell.textLabel?.text = weather["city"] // Assuming city name is in the dictionary
+            cell.textLabel?.text = weather["city"]
             return cell
 
         } else if indexPath.row == 1 {
-            // Temperature cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "TemperatureCell", for: indexPath)
-            if let temperature = weather["temperature"] {
-                cell.textLabel?.text = "Temperature: \(temperature)°C"
+            if let temperature = weather["temperature"], let tempValue = Double(temperature) {
+                let displayTemp = isCelsius ? tempValue : tempValue * 9 / 5 + 32
+                let unit = isCelsius ? "°C" : "°F"
+                cell.textLabel?.text = "Temperature: \(String(format: "%.1f", displayTemp))\(unit)"
             }
             return cell
 
-        }else {
-            // Image cell
+        } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath)
-            
-            // Set the image based on the weather condition
             if let imageName = weather["image"] {
                 cell.imageView?.image = UIImage(named: imageName)
             }
-            
-            // Adjust the image size by setting the image view constraints
             cell.imageView?.translatesAutoresizingMaskIntoConstraints = false
             cell.imageView?.contentMode = .scaleAspectFill
             cell.imageView?.clipsToBounds = true
-            
-            // Set constraints to enlarge the image view
             NSLayoutConstraint.activate([
-                cell.imageView!.widthAnchor.constraint(equalToConstant: 100), // Set desired width
-                cell.imageView!.heightAnchor.constraint(equalToConstant: 100), // Set desired height
-                cell.imageView!.centerYAnchor.constraint(equalTo: cell.centerYAnchor), // Center vertically
-                cell.imageView!.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 16) // Set leading space
+                cell.imageView!.widthAnchor.constraint(equalToConstant: 100),
+                cell.imageView!.heightAnchor.constraint(equalToConstant: 100),
+                cell.imageView!.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
+                cell.imageView!.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 16)
             ])
-            
-            // Enable user interaction on the image view and add tap gesture
             cell.imageView?.isUserInteractionEnabled = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
             cell.imageView?.addGestureRecognizer(tapGesture)
-            cell.imageView?.tag = indexPath.section // Tag to identify the specific section
-            
+            cell.imageView?.tag = indexPath.section
             return cell
         }
-
     }
 
-    // Function to handle image tap events
-        @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-            guard let tappedImageView = sender.view else { return }
-            let section = tappedImageView.tag
-            // Handle the tap event, e.g., display more details about the image related to the section
-            print("Image tapped in section: \(section)")
-        }
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view else { return }
+        let section = tappedImageView.tag
+        print("Image tapped in section: \(section)")
+    }
 
-        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            // Create an instance of the DetailViewController from the storyboard
-            if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
-                
-                // Get the selected weather data
-                let selectedWeather = weatherData[indexPath.section]
-                
-                // Pass the data to the DetailViewController
-                detailVC.cityName = selectedWeather["city"]
-                detailVC.temperature = selectedWeather["temperature"]
-                detailVC.weatherCondition = selectedWeather["condition"]
-                detailVC.humidity = selectedWeather["humidity"]
-                detailVC.weatherDescription = selectedWeather["description"]
-                
-                if let imageName = selectedWeather["image"] {
-                    detailVC.cityImage = UIImage(named: imageName)
-                }
-                
-                // Push the DetailViewController to the navigation stack
-                navigationController?.pushViewController(detailVC, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
+            let selectedWeather = weatherData[indexPath.section]
+            detailVC.cityName = selectedWeather["city"]
+            detailVC.temperature = selectedWeather["temperature"]
+            detailVC.weatherCondition = selectedWeather["condition"]
+            detailVC.humidity = selectedWeather["humidity"]
+            detailVC.weatherDescription = selectedWeather["description"]
+            
+            if let imageName = selectedWeather["image"] {
+                detailVC.cityImage = UIImage(named: imageName)
             }
+            
+            navigationController?.pushViewController(detailVC, animated: true)
         }
     }
+}
