@@ -10,6 +10,11 @@ import UIKit
 
 private let reuseIdentifier = "CollectCell"
 
+// Define the custom protocol outside of the classes
+protocol ImageDisplayable: AnyObject {
+    func displayImage(_ image: UIImage)
+}
+
 class CollectionViewController: UICollectionViewController {
 
     // Use WeatherData singleton to access weather data and images
@@ -19,7 +24,6 @@ class CollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Register cell classes if not using storyboard prototype cells
         // self.collectionView!.register(CollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
@@ -32,20 +36,84 @@ class CollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Get the number of images from the WeatherData
-        return (self.weatherData?.numberOfImages())!
+        return self.weatherData?.numberOfImages() ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Dequeue the cell and set the image
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell {
-            let image = self.weatherData?.getImageAt(indexPath.row)
-            cell.imageView.image = image
-            return cell
-        } else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? CollectionViewCell else {
             fatalError("Could not dequeue cell")
         }
+        
+        let image = self.weatherData?.getImageAt(indexPath.row)
+        cell.imageView.image = image
+        return cell
     }
-    
+
+    // Handle item selection to display the image
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let selectedImage = self.weatherData?.getImageAt(indexPath.row) {
+            // Initialize ImagePopupViewController
+            let imagePopupVC = ImagePopupViewController()
+            
+            // Set the selected image and display it using the protocol method
+            imagePopupVC.selectedImage = selectedImage
+            self.present(imagePopupVC, animated: true, completion: nil)
+        }
+    }
+}
+
+// Implementation of ImagePopupViewController
+class ImagePopupViewController: UIViewController, ImageDisplayable {
+
+    var selectedImage: UIImage?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+    }
+
+    private func setupView() {
+        // Set up the gradient background
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.black.withAlphaComponent(0.8).cgColor, UIColor.clear.cgColor]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
+
+        // Set up the image view
+        guard let image = selectedImage else { return }
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = view.bounds
+        imageView.isUserInteractionEnabled = true
+        view.addSubview(imageView)
+
+        // Add gesture recognizer to close the view
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
+        imageView.addGestureRecognizer(tapGesture)
+
+        // Optional: Add swipe down gesture to close
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissView))
+        swipeGesture.direction = .down
+        view.addGestureRecognizer(swipeGesture)
+    }
+
+    // Method to dismiss the view controller
+    @objc private func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    // Implement the protocol method to display the image
+    func displayImage(_ image: UIImage) {
+        self.selectedImage = image
+        self.modalPresentationStyle = .fullScreen
+        self.present(self, animated: true, completion: nil)
+    }
+}
+
+
+
     
     // MARK: - UICollectionViewDelegate
 
@@ -77,4 +145,4 @@ class CollectionViewController: UICollectionViewController {
     
     }
     */
-}
+

@@ -1,5 +1,5 @@
 //
-//  WeatherViewController.swift
+//  TableViewController.swift
 //  CS7323LabOne
 //
 //  Created by mingyun zhang on 9/18/24.
@@ -113,9 +113,25 @@ class WeatherTableViewController: UITableViewController {
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         guard let tappedImageView = sender.view else { return }
-        let section = tappedImageView.tag
-        print("Image tapped in section: \(section)")
+        
+        // Create an alert controller
+        let alertController = UIAlertController(
+            title: "Image Alart",
+            message: "This is Image",
+            preferredStyle: .alert
+        )
+        
+        // Add an OK action
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        // Present the alert
+        if let viewController = sender.view?.window?.rootViewController {
+            viewController.present(alertController, animated: true, completion: nil)
+        }
     }
+
+
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
@@ -125,6 +141,7 @@ class WeatherTableViewController: UITableViewController {
             detailVC.weatherCondition = selectedWeather["condition"]
             detailVC.humidity = selectedWeather["humidity"]
             detailVC.weatherDescription = selectedWeather["description"]
+            detailVC.weatherDate = selectedWeather["date"]
             
             if let imageName = selectedWeather["image"] {
                 detailVC.cityImage = UIImage(named: imageName)
@@ -134,3 +151,4 @@ class WeatherTableViewController: UITableViewController {
         }
     }
 }
+

@@ -12,6 +12,7 @@
 		285AEACC2C9BD268005E2BA2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285AEACB2C9BD268005E2BA2 /* DetailViewController.swift */; };
 		285AEAD82C9CF5F8005E2BA2 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285AEAD72C9CF5F8005E2BA2 /* CollectionViewController.swift */; };
 		285AEADA2C9CF8EB005E2BA2 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285AEAD92C9CF8EB005E2BA2 /* CollectionViewCell.swift */; };
+		287D1CC72C9FB9C20023F42C /* WeatherData.json in Resources */ = {isa = PBXBuildFile; fileRef = 287D1CC62C9FB9B30023F42C /* WeatherData.json */; };
 		87EE09162C9B7A6600F5BCD5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EE09152C9B7A6600F5BCD5 /* AppDelegate.swift */; };
 		87EE09182C9B7A6600F5BCD5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EE09172C9B7A6600F5BCD5 /* SceneDelegate.swift */; };
 		87EE091A2C9B7A6600F5BCD5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EE09192C9B7A6600F5BCD5 /* ViewController.swift */; };
@@ -45,6 +46,7 @@
 		285AEACB2C9BD268005E2BA2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		285AEAD72C9CF5F8005E2BA2 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		285AEAD92C9CF8EB005E2BA2 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		287D1CC62C9FB9B30023F42C /* WeatherData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = WeatherData.json; sourceTree = "<group>"; };
 		87EE09122C9B7A6600F5BCD5 /* CS7323LabOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CS7323LabOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87EE09152C9B7A6600F5BCD5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		87EE09172C9B7A6600F5BCD5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				87EE09232C9B7A6700F5BCD5 /* Info.plist */,
 				285AEAC82C9BCE2B005E2BA2 /* WeatherData.h */,
 				285AEAC92C9BCE2B005E2BA2 /* WeatherData.m */,
+				287D1CC62C9FB9B30023F42C /* WeatherData.json */,
 				285AEAC22C9BC124005E2BA2 /* CS7323LabOne-Bridging-Header.h */,
 			);
 			path = CS7323LabOne;
@@ -226,6 +229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				287D1CC72C9FB9C20023F42C /* WeatherData.json in Resources */,
 				87EE091F2C9B7A6700F5BCD5 /* Assets.xcassets in Resources */,
 				87EE09222C9B7A6700F5BCD5 /* Base in Resources */,
 				87EE091D2C9B7A6600F5BCD5 /* Base in Resources */,
@@ -440,7 +444,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N22535K98N;
+				DEVELOPMENT_TEAM = 2Q9UX2YL55;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CS7323LabOne/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -453,7 +457,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.CS7323LabOne;
+				PRODUCT_BUNDLE_IDENTIFIER = mingyun.CS7323LabOne;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "CS7323LabOne/CS7323LabOne-Bridging-Header.h";
@@ -471,7 +475,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N22535K98N;
+				DEVELOPMENT_TEAM = 2Q9UX2YL55;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CS7323LabOne/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -484,7 +488,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.CS7323LabOne;
+				PRODUCT_BUNDLE_IDENTIFIER = mingyun.CS7323LabOne;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "CS7323LabOne/CS7323LabOne-Bridging-Header.h";

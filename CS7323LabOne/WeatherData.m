@@ -5,22 +5,19 @@
 //  Created by mingyun zhang on 9/18/24.
 //
 
-// WeatherData.m
-// CS7323LabOne
-//
-// Created by mingyun zhang on 9/18/24.
-//
-
 #import "WeatherData.h"
 
 @interface WeatherData ()
 
-@property (nonatomic, strong) NSMutableArray<UIImage *> *images;
+// Properties to store weather data and images
+@property (nonatomic, strong) NSMutableArray<NSDictionary *> *weatherData; // Array to hold weather data dictionaries
+@property (nonatomic, strong) NSMutableArray<UIImage *> *images; // Array to hold images associated with weather data
 
 @end
 
 @implementation WeatherData
 
+// Singleton pattern to ensure only one instance of WeatherData exists
 + (instancetype)sharedInstance {
     static WeatherData *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -30,73 +27,68 @@
     return sharedInstance;
 }
 
+// Initialization of WeatherData
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _images = [NSMutableArray array];
-        [self loadImages];
+        _weatherData = [NSMutableArray array]; // Initialize weather data array
+        _images = [NSMutableArray array]; // Initialize images array
+        [self loadWeatherData]; // Load weather data from JSON file
     }
     return self;
 }
 
-- (NSArray *)getWeatherData {
-    return @[
-        @{
-            @"city": @"New York",
-            @"temperature": @"22",
-            @"condition": @"Sunny",
-            @"forecast": @"Expect clear skies throughout the day with no precipitation.",
-            @"humidity": @"45%",
-            @"windSpeed": @"10 km/h",
-            @"description": @"A beautiful sunny day with mild temperatures. Perfect for outdoor activities.",
-            @"image": @"new_york",
-            @"date": @"2024-09-19"
-        },
-        @{
-            @"city": @"Dallas",
-            @"temperature": @"25",
-            @"condition": @"Cloudy",
-            @"forecast": @"Overcast skies with a slight chance of light showers in the afternoon.",
-            @"humidity": @"60%",
-            @"windSpeed": @"15 km/h",
-            @"description": @"A mostly cloudy day with moderate temperatures. Ideal for a walk in the park.",
-            @"image": @"dallas",
-            @"date": @"2024-09-19"
-        },
-        @{
-            @"city": @"Denver",
-            @"temperature": @"18",
-            @"condition": @"Rainy",
-            @"forecast": @"Persistent rain expected throughout the day with possible thunderstorms.",
-            @"humidity": @"80%",
-            @"windSpeed": @"20 km/h",
-            @"description": @"A rainy day with cooler temperatures. Good day to stay indoors and enjoy a warm drink.",
-            @"image": @"denver",
-            @"date": @"2024-09-19"
+// Load weather data from a JSON file in the main bundle
+- (void)loadWeatherData {
+    // Get the file path of the JSON file named "WeatherData.json"
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WeatherData" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    
+    // Check if data is available
+    if (data) {
+        NSError *error = nil;
+        // Parse JSON data into an array
+        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        if (error) {
+            NSLog(@"Error reading JSON file: %@", error.localizedDescription); // Log any errors during parsing
+            return;
         }
-    ];
-}
-
-- (void)loadImages {
-    NSArray *weatherArray = [self getWeatherData];
-    for (NSDictionary *data in weatherArray) {
-        NSString *imageName = data[@"image"];
-        UIImage *image = [UIImage imageNamed:imageName];
-        if (image) {
-            [self.images addObject:image];
+        
+        // Check if the parsed object is an array
+        if ([jsonArray isKindOfClass:[NSArray class]]) {
+            [self.weatherData addObjectsFromArray:jsonArray]; // Add the parsed JSON objects to the weather data array
+            [self loadImages]; // Load images corresponding to the weather data
         }
     }
 }
 
+// Returns a copy of the weather data array
+- (NSArray *)getWeatherData {
+    return [self.weatherData copy];
+}
+
+// Load images based on the image names provided in weather data
+- (void)loadImages {
+    for (NSDictionary *data in self.weatherData) {
+        NSString *imageName = data[@"image"]; // Get the image name from weather data
+        UIImage *image = [UIImage imageNamed:imageName]; // Load the image
+        if (image) {
+            [self.images addObject:image]; // Add the image to the images array if it exists
+        }
+    }
+}
+
+// Returns the number of images loaded
 - (NSInteger)numberOfImages {
     return self.images.count;
 }
 
+// Returns the image at a specified index
 - (UIImage *)getImageAtIndex:(NSInteger)index {
     if (index < self.images.count) {
         return self.images[index];
     }
-    return nil;
+    return nil; // Return nil if the index is out of bounds
 }
 
 @end
