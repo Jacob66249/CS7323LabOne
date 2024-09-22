@@ -167,6 +167,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="1xC-uY-nQv">
+                                <rect key="frame" x="20" y="749" width="353" height="32"/>
+                            </stepper>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Font Size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="flw-v6-Z3t">
+                                <rect key="frame" x="131" y="755" width="71" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="VHv-JF-Hm3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -174,6 +183,10 @@
                             <constraint firstItem="FGY-Nh-UgA" firstAttribute="leading" secondItem="VHv-JF-Hm3" secondAttribute="leading" constant="350" id="1eb-4o-4Ko">
                                 <variation key="heightClass=compact-widthClass=regular" constant="350"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                            </constraint>
+                            <constraint firstItem="flw-v6-Z3t" firstAttribute="top" secondItem="VHv-JF-Hm3" secondAttribute="top" constant="330" id="3z4-vX-eiT">
+                                <variation key="heightClass=compact-widthClass=regular" constant="330"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="696"/>
                             </constraint>
                             <constraint firstItem="os2-AC-fYL" firstAttribute="top" secondItem="VHv-JF-Hm3" secondAttribute="top" constant="130" id="4r5-iG-CDH">
                                 <variation key="heightClass=compact-widthClass=regular" constant="130"/>
@@ -187,9 +200,17 @@
                                 <variation key="heightClass=compact-widthClass=regular" constant="300"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="131"/>
                             </constraint>
+                            <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="1xC-uY-nQv" secondAttribute="trailing" constant="20" id="6qA-e7-fdj">
+                                <variation key="heightClass=compact-widthClass=regular" constant="20"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                            </constraint>
                             <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="Eeh-DA-ufb" secondAttribute="trailing" constant="20" id="E8E-dp-4vY">
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                            </constraint>
+                            <constraint firstItem="1xC-uY-nQv" firstAttribute="top" secondItem="VHv-JF-Hm3" secondAttribute="top" constant="300" id="EaJ-nU-wrD">
+                                <variation key="heightClass=compact-widthClass=regular" constant="280"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="690"/>
                             </constraint>
                             <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="os2-AC-fYL" secondAttribute="trailing" constant="20" id="GgA-VO-0T7">
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
@@ -216,6 +237,10 @@
                                 <variation key="heightClass=compact-widthClass=regular" constant="350"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
                             </constraint>
+                            <constraint firstItem="flw-v6-Z3t" firstAttribute="leading" secondItem="VHv-JF-Hm3" secondAttribute="leading" constant="410" id="SiN-jz-vfc">
+                                <variation key="heightClass=compact-widthClass=regular" constant="410"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="131"/>
+                            </constraint>
                             <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="FGY-Nh-UgA" secondAttribute="trailing" constant="20" id="T4M-hz-KDl">
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
@@ -227,6 +252,10 @@
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
                             </constraint>
+                            <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="flw-v6-Z3t" secondAttribute="trailing" constant="191" id="b98-Xc-xGH">
+                                <variation key="heightClass=compact-widthClass=regular" constant="191"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="191"/>
+                            </constraint>
                             <constraint firstItem="VHv-JF-Hm3" firstAttribute="trailing" secondItem="gEe-kV-81J" secondAttribute="trailing" constant="20" id="kxA-n7-7nZ">
                                 <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                             </constraint>
@@ -235,6 +264,10 @@
                                 <variation key="heightClass=regular-widthClass=compact" constant="413"/>
                             </constraint>
                             <constraint firstItem="gGL-cb-7ur" firstAttribute="top" secondItem="VHv-JF-Hm3" secondAttribute="top" id="o50-un-F91"/>
+                            <constraint firstItem="1xC-uY-nQv" firstAttribute="leading" secondItem="VHv-JF-Hm3" secondAttribute="leading" constant="400" id="pqy-Yt-TjI">
+                                <variation key="heightClass=compact-widthClass=regular" constant="400"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                            </constraint>
                             <constraint firstItem="FGY-Nh-UgA" firstAttribute="top" secondItem="VHv-JF-Hm3" secondAttribute="top" constant="190" id="v4Y-oE-TxF">
                                 <variation key="heightClass=compact-widthClass=regular" constant="190"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="373"/>
@@ -254,7 +287,7 @@
                         <outlet property="humidityLabel" destination="Eeh-DA-ufb" id="JYd-Yp-S7f"/>
                         <outlet property="scrollView" destination="bS5-4I-eEe" id="pJR-6e-yg8"/>
                         <outlet property="segmentedControl" destination="gGL-cb-7ur" id="PQw-M2-lay"/>
-                        <outlet property="stepper" destination="tX9-PV-JiP" id="xZP-px-SWd"/>
+                        <outlet property="stepper" destination="1xC-uY-nQv" id="ir4-bc-p3Z"/>
                         <outlet property="stepperLabel" destination="zEI-Ct-4uP" id="d6u-bZ-fH0"/>
                         <outlet property="temperatureLabel" destination="os2-AC-fYL" id="bVO-Ce-l42"/>
                         <outlet property="toggleSwitch" destination="gEe-kV-81J" id="XF7-Oz-pOt"/>
